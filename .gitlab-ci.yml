@@ -1,0 +1,21 @@
+#test
+.dev_credentials_aws:
+   image:
+     name: $IMAGE
+     entrypoint: [""]
+   when: manual
+   script:
+     - echo "Configure AWS Credentials"
+     - export AWS_CREDENTIALS=$AWS_CREDENTIALS_DEV
+     - export AWS_CONFIG=$AWS_CONFIG_DEV
+     - echo "AWS_CREDENTIALS $AWS_CREDENTIALS"
+     - echo "AWS_CONFIG $AWS_CONFIG"
+     - mkdir -p ~/.aws
+     - echo "$AWS_CREDENTIALS" | base64 -d > ~/.aws/credentials
+     - echo "$AWS_CONFIG" | base64 -d > ~/.aws/config
+     - chmod 600 ~/.aws/*
+     - echo "Configure SSH Keys"
+     - mkdir -p ~/.ssh
+     - echo "$SSH_PRIVATE_KEY_DEV" | base64 -d > /root/.ssh/id_rsa
+     - echo "$SSH_PUBLIC_KEY_DEV" | base64 -d > /root/.ssh/id_rsa.pub
+     - chmod 600 /root/.ssh/*
